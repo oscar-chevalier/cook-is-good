@@ -1,0 +1,13 @@
+Types de produits :
+demande rien (ex. sucre)
+demande d'attrendre (ex. crêpe)
+demande de ne pas trop attendre (ex. blanc en neige)
+
+Types d'actions :
+demande rien (ex. cuisson)
+demande totale attention (ex. coupe)
+demande de l'attention (ex. chauffer du lait)
+
+
+recette test :
+version = 0.0
