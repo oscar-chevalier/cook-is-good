@@ -1,6 +1,6 @@
 from json import loads
 from typing import List, Dict
-from bases import Recette, Action, Produit, Ingredient
+from bases import Recette, Action, Produit, Ingredient, Ustensile
 
 
 def ingredient_produit(txt: Dict):
@@ -18,17 +18,27 @@ def ingredient_produit(txt: Dict):
                       txt['nom_scientifique'])
 
 
+def ustensile_f(txt: Dict):
+    return Ustensile(txt['nom'])
+
+
 def action_f(txt: Dict):
     ingredients = []
+    ustensiles = []
     for ingredient in txt['ingredients']:
         ingredients.append(ingredient_produit(ingredient))
+    for ustensile in txt['ustensiles']:
+        ustensiles.append(ustensile_f(ustensile))
     return Action(txt['nom_produit'],
                   txt['action_effectue'],
                   txt['attention'],
                   txt['temps_estime'],
                   txt['temps_min'],
                   txt['temps_max'],
-                  ingredients)
+                  txt['proportionnel'],
+                  ingredients,
+                  ustensiles,
+                  txt['commentaires'])
 
 
 def version_1_0(text: List[Dict]):
@@ -40,8 +50,17 @@ def version_1_0(text: List[Dict]):
     return recette
 
 
+def version_1_1(text: List[Dict]):
+    text = text[0]
+    actions = []
+    for action in text['actions']:
+        actions.append(action_f(action))
+    recette = Recette(text['nom'], actions)
+    return recette
+
+
 def decodage(recette):
-    with open(recette + '.menu') as file:
+    with open('recettes/' + recette + '.menu') as file:
         text = []
         version = 0
         for ligne in file:
@@ -51,3 +70,5 @@ def decodage(recette):
             text.append(dictionnaire)
     if version == 1.0:
         return version_1_0(text)
+    if version == 1.1:
+        return version_1_1(text)
