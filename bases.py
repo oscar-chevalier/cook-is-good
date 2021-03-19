@@ -60,7 +60,9 @@ class Produit:
         return txt
 
     def arbre(self):
-        return f'    {self.nom} ({self.ref_produit})'
+        if self.ref_produit is None:
+            return f'ar-   {self.nom} ({self.ref_produit}, {type(self.ref_produit)})'
+        return f'ar+   {self.nom} ({self.ref_produit}, {type(self.ref_produit)}, {self.ref_produit.noms_produit})'
 
 
 class Ingredient(Produit):
@@ -163,6 +165,9 @@ class Action:
             aff += f'{ing.arbre()} ({type(ing)})\n'
         return aff
 
+    def temps(self, multi: float):
+        return self.temps_estime + self.temps_estime*(1-multi)*self.proportionnel
+
 
 class Recette:
     def __init__(self, nom, actions: List[Action]):
@@ -172,9 +177,10 @@ class Recette:
         for a, action in enumerate(self.actions):
             for nom_produit in action.noms_produit:
                 produits[nom_produit] = a
-                for i, ing in enumerate(action.ingredients):
-                    if ing.nom in produits:
-                        self.actions[a].ingredients[i].ref_produit = self.actions[produits[ing.nom]]
+        for a, action in enumerate(self.actions):
+            for i, ing in enumerate(action.ingredients):
+                if ing.nom in produits:
+                    self.actions[a].ingredients[i].ref_produit = self.actions[produits[ing.nom]]
 
     def __str__(self):
         aff = f'{self.nom} :\n'
@@ -208,4 +214,4 @@ def tj(x):
     return th(x) * 24
 
 
-crediter = ['icons by freepik']
+crediter = ['icons by freepik', 'Original idea by Marc Chevalier']
