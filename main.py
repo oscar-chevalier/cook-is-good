@@ -2,7 +2,6 @@ from recettes import creusois, crepes
 from opener import decodage
 from saver import encodage
 from recipies_manager import lecteur_de_recettes
+from affichage_dev import aff_main_menu
 
-
-print(creusois.arbre())
-lecteur_de_recettes([creusois, crepes])
+aff_main_menu()

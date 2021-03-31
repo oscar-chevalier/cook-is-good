@@ -1,13 +1,14 @@
-class Date:
-    def __init__(self, annee: int, mois: int, jour: int):
-        self.annee = annee
-        self.mois = mois
-        self.jour = jour
+from bases import Date
 
 
 class Ingredient:
-    def __init__(self, nom: str, quantite: int, date_de_peremption: Date, jours_apres_ouverture: int):
+    def __init__(self, nom: str, quantite: int, unite: str, date_de_peremption: Date, jours_apres_ouverture: int = -1):
         self.nom = nom
         self.quantite = quantite
+        self.unite = unite
         self.date_de_peremption = date_de_peremption
         self.jours_apres_ouverture = jours_apres_ouverture
+
+    def write_json(self):
+        return {'nom': self.nom, 'quantite': self.quantite, 'unite': self.unite, 'ddp': self.date_de_peremption,
+                'jao': self.jours_apres_ouverture}

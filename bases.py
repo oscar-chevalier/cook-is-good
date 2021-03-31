@@ -22,6 +22,13 @@ class Ustensile:
         return {'nom': self.nom}
 
 
+class Date:
+    def __init__(self, annee: int, mois: int, jour: int):
+        self.annee = annee
+        self.mois = mois
+        self.jour = jour
+
+
 class Produit:
     def __init__(self, nom: str, quantite: int = 0, unite: str = '', temps_min: int = 0, temps_max: int = 0):
         if quantite >= 2 and unite == '@U':
@@ -200,6 +207,11 @@ class Recette:
         for action in self.actions:
             aff += action.arbre()
         return aff
+
+
+class RecetteEvidente(Recette):
+    def __init__(self, nom: str, actions: List[Action]):
+        super().__init__(nom, actions)
 
 
 def th(x):

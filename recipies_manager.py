@@ -1,13 +1,14 @@
 from typing import List
 
 
-from bases import Recette, Action
+from bases import Recette, Action, Ingredient
 
 
 class ArbreProduits:
     def __init__(self, action: Action, enfants: List):
         self.action = action
         self.enfants = enfants
+        self.decendants = []
 
     def aff(self, n):
         aff = 'def' + str(self.action.noms_produit)
@@ -15,10 +16,11 @@ class ArbreProduits:
             aff += f'(e : {enfant.aff(n+1)}, {type(enfant)}, {n})'
         return aff
 
-    def decendants(self):
+    def f_decendants(self):
+        self.decendants.extend(self.enfants)
         for enfant in self.enfants:
-            self.enfants.extend(enfant.decendants)
-        return self.enfants
+            self.decendants.extend(enfant.f_decendants())
+        return self.decendants
 
 
 def optimisateur_recursif(ar: ArbreProduits):
@@ -30,36 +32,76 @@ def optimisateur_recursif(ar: ArbreProduits):
     return ar
 
 
-def ordonnanceur_recursif(ar: ArbreProduits):
-    ordre_actions = []
-    for enfant in ar.enfants:
-        ordre_actions.extend(ordonnanceur_recursif(enfant))
-    ordre_actions.append(ar.action)
-    return ordre_actions
-
-
-def ordonnanceur(roots: List[ArbreProduits]):
-    ordre_actions = []
-    for root in roots:
-        ordre_actions.extend(ordonnanceur_recursif(root))
-    return ordre_actions
-
-
-def og_recursif(n, listes, actions):
-    if len(listes[0]) == n:
-        return listes
-    new_listes = []
+def denombrement(n, m):
+    if n == 1:
+        n_listes = []
+        for i in range(m):
+            n_listes.append([i])
+        return n_listes
+    listes = denombrement(n - 1, m)
+    n_listes = []
     for liste in listes:
-        for i in actions:
+        for i in range(m):
             if i not in liste:
-                new_listes.append(liste + [i])
-    return og_recursif(n, new_listes, actions)
+                n_listes.append((liste + [i]))
+    return n_listes
 
 
-def optimisateur_general(ordre_actions: List[Action]):
-    print(len(ordre_actions))
-    listes = og_recursif(len(ordre_actions), [[]], ordre_actions)
-    print(listes)
+def og_recursif(root):
+    if len(root.enfants) == 0:
+        return [[]]
+    listes = []
+    for enfant in root.enfants:
+        listes.extend(og_recursif(enfant))
+    n_listes = []
+    for liste in listes:
+        poss = denombrement(len(root.enfants), len(root.enfants))
+        for pos in poss:
+            liste_t = []
+            for n in pos:
+                liste_t.append(root.enfants[n])
+            n_listes.append(liste + liste_t)
+    return n_listes
+
+
+def converter(roots: List[List[List[ArbreProduits]]]) -> List[List[List[Action]]]:
+    actions_possibles = []
+    for root in roots:
+        r = []
+        for liste in root:
+            l = []
+            for ap in liste:
+                l.append(ap.action)
+            r.append(l)
+        actions_possibles.append(r)
+    return actions_possibles
+
+
+def ordonnanceur(actions_possibles: List[List[List[Action]]]):
+    print(actions_possibles)
+    ingredients = []
+    for _ in range(len(actions_possibles)):
+        ingredients.append([])
+    produits = []
+    for _ in range(len(actions_possibles)):
+        produits.append([])
+    for nr, recette in enumerate(actions_possibles):
+        for liste_actions in recette:
+            for action in liste_actions:
+                for ingredient in action.ingredients:
+                    if ingredient.nom not in ingredients[nr] and type(ingredient) is Ingredient:
+                        ingredients[nr].append(ingredient.nom)
+                for produit in action.produits:
+                    if produit.nom not in produits[nr]:
+                        produits[nr].append(produit.nom)
+    ingredients_en_commun = {}
+    ingredients_deja_vu = {}
+    for i, recette in enumerate(ingredients):
+        for ingredient in recette:
+            if ingredient not in ingredients_deja_vu:
+                ingredients_deja_vu[ingredient] = [i]
+            else:
+                ingredients_deja_vu[ingredient].append(i)
 
 
 def optimisateur(recettes: List[Recette]):
@@ -68,9 +110,12 @@ def optimisateur(recettes: List[Recette]):
         root = optimisateur_recursif(ArbreProduits(recette.actions[-1], []))
         roots.append(root)
     for root in roots:
-        root.decendants()
-    ordre_actions = ordonnanceur(roots)
-    optimisateur_general(ordre_actions)
+        root.f_decendants()
+    liste_roots = []
+    for root in roots:
+        liste_roots.append(og_recursif(root))
+    actions_possibles = converter(liste_roots)
+    ordre_actions = ordonnanceur(actions_possibles)
     return ordre_actions
 
 
