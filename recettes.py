@@ -17,7 +17,7 @@ def oeufs(nbr):
     return Ingredient('oeuf', nbr, '@U')
 
 
-creusois = Recette('Creusois',
+creusois = Recette('Creusois', 2,
                    [Action(['le 1er melange'], 'Melanger', True, 60, 0, 0, 0,
                            [Ingredient('sucre', 80, 'g', 0, 0, 'saccharose'),
                             Ingredient('farine', 80, 'g', 0, 0),
@@ -37,8 +37,7 @@ creusois = Recette('Creusois',
                     Action(['fin'], 'Cuire', False, tmin(30), th(1), tj(5), 0,
                            [Produit('le melange finale')])])
 
-
-crepes = Recette('Crepes',
+crepes = Recette('Crepes', 4,
                  [Action(['le beurre fondue'], 'Fondre', False, 60, 0, tmin(5), 0.2,
                          [Ingredient('beurre', 50, 'g', 0, tmin(10))],
                          [Ustensile('Micro-onde'),
@@ -66,3 +65,14 @@ crepes = Recette('Crepes',
                   Action(['fin'], 'Cuire', True, tmin(15), 0, tj(7), 1,
                          [Produit('le 3eme melange')],
                          [Ustensile('Poile')])])
+
+gnocchis_a_la_creme_fraiche = Recette('Gnocchis_a_la_creme_fraiche', 2,
+                                      [Action(['gnocchis_cruits'], 'Cuire', False, tmin(5), 0, tmin(10), 0.2,
+                                              [Ingredient('gnocchis', 200, 'g')],
+                                              [Ustensile('Poile'),
+                                               Ustensile('Plaque de cuisson')]),
+                                       Action(['fin'], 'Ajouter', True, 30, 0, tmin(5), 0.2,
+                                              [Ingredient('craime fraiche', 10, 'cL')],
+                                              [Ustensile('Poile')])])
+
+recettes_preinstallees = [crepes, creusois, gnocchis_a_la_creme_fraiche]

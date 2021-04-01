@@ -28,6 +28,9 @@ class Date:
         self.mois = mois
         self.jour = jour
 
+    def write_json(self):
+        return {'annee': self.annee, 'mois': self.mois, 'jour': self.jour}
+
 
 class Produit:
     def __init__(self, nom: str, quantite: int = 0, unite: str = '', temps_min: int = 0, temps_max: int = 0):
@@ -177,9 +180,10 @@ class Action:
 
 
 class Recette:
-    def __init__(self, nom, actions: List[Action]):
+    def __init__(self, nom, nbr_personnes: int, actions: List[Action]):
         self.nom = nom
         self.actions = actions
+        self.nbr_personnes = nbr_personnes
         produits = {}
         for a, action in enumerate(self.actions):
             for nom_produit in action.noms_produit:
@@ -188,6 +192,11 @@ class Recette:
             for i, ing in enumerate(action.ingredients):
                 if ing.nom in produits:
                     self.actions[a].ingredients[i].ref_produit = self.actions[produits[ing.nom]]
+        self.ingredients = []
+        for action in actions:
+            for ingredient in action.ingredients:
+                if type(ingredient) is Ingredient:
+                    self.ingredients.append(ingredient)
 
     def __str__(self):
         aff = f'{self.nom} :\n'

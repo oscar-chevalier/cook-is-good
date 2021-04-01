@@ -10,5 +10,6 @@ class Ingredient:
         self.jours_apres_ouverture = jours_apres_ouverture
 
     def write_json(self):
-        return {'nom': self.nom, 'quantite': self.quantite, 'unite': self.unite, 'ddp': self.date_de_peremption,
+        return {'nom': self.nom, 'quantite': self.quantite, 'unite': self.unite,
+                'ddp': self.date_de_peremption.write_json(),
                 'jao': self.jours_apres_ouverture}

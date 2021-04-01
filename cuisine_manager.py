@@ -1,4 +1,4 @@
-from json import dumps
+from json import dumps, loads
 from pathlib import Path
 from typing import List
 from stock_manager import Ingredient
@@ -27,14 +27,25 @@ class Cuisine:
         liste_i = []
         for ingredient in self.ingredients:
             liste_i.append(ingredient.write_json())
-        texte = {'nom': self.nom}
+        texte = {'nom': self.nom, 'ustensiles': liste_u, 'ingredients': liste_i}
         return texte
 
 
-def saver(cuisine: Cuisine):
+def saver_de_cuisine(cuisine: Cuisine):
     with open(f'cuisines/{cuisine.nom}.cuisine.json', mode='w') as file:
         texte = cuisine.write_json()
         file.write(dumps(texte))
+
+
+def cuisine_translator(dictionnaire: dict):
+    pass
+
+
+def translator(texte: List[str]):
+    cuisines = []
+    for ligne in texte:
+        dictionnaire = loads(ligne)
+        cuisines.append(cuisine_translator(dictionnaire))
 
 
 def cherche_cuisine():
@@ -49,5 +60,6 @@ def cherche_cuisine():
                         cuisine.append(line)
                     cuisines.append(cuisine)
     else:
-        p.mkdir()
+        d = p / 'cuisines'
+        d.mkdir()
         return None

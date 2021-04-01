@@ -1,6 +1,8 @@
 from json import loads
+from pathlib import Path
 from typing import List, Dict
 from bases import Recette, Action, Produit, Ingredient, Ustensile
+from recettes import recettes_preinstallees
 
 
 def ingredient_produit(txt: Dict):
@@ -72,3 +74,13 @@ def decodage(recette):
         return version_1_0(text)
     if version == 1.1:
         return version_1_1(text)
+
+
+def ouvreur_des_recettes():
+    p = Path.cwd()
+    recettes = []
+    for f in p.iterdir():
+        if str(f.parts[-1])[-5:] == '.menu':
+            recettes.append(decodage(str(f.parts[-1])))
+    recettes.extend(recettes_preinstallees)
+    return recettes
