@@ -1,7 +1,7 @@
 from json import dumps, loads
 from pathlib import Path
 from typing import List, Dict
-from programmes.stock.stock_manager import Ingredient, ingredient_creator
+from programmes.stock.stock_manager import IngredientStock, ingredient_creator
 
 
 class UstensileCuisine:
@@ -19,7 +19,7 @@ def ustensile_creator(dico: Dict):
 
 
 class Cuisine:
-    def __init__(self, nom: str, ustensiles: List[UstensileCuisine], ingredients: List[Ingredient]):
+    def __init__(self, nom: str, ustensiles: List[UstensileCuisine], ingredients: List[IngredientStock]):
         self.nom = nom
         self.ustensiles = ustensiles
         self.ingredients = ingredients
@@ -72,3 +72,13 @@ def cuisine_opener(nom_cuisine: str):
             for ustensile in dico['ustensiles']:
                 liste_u.append(ustensile_creator(ustensile))
             return Cuisine(dico['nom'], liste_u, liste_i)
+
+
+def chercheur_de_cuisines():
+    p = Path.cwd()
+    p = p / 'cuisines'
+    cuisines = []
+    for f in p.iterdir():
+        if str(f.parts[-1])[-5:] == '.json':
+            cuisines.append(str(f.parts[-1][:-5]))
+    return cuisines

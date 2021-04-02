@@ -80,3 +80,11 @@ def chercheur_de_toutes_les_configs():
         if str(f.parts[-1])[-5:] == '.json':
             utilisateurs.append(str(f.parts[-1])[:-5])
     return utilisateurs
+
+
+def supprimer_config(nom_config: str):
+    p = Path.cwd()
+    nom_config += '.json'
+    p = p / 'utilisateurs' / nom_config
+    print(str(p))
+    p.unlink()

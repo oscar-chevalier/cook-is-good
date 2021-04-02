@@ -48,7 +48,7 @@ def version_1_0(text: List[Dict]):
     actions = []
     for action in text['actions']:
         actions.append(action_f(action))
-    recette = Recette(text['nom'], actions)
+    recette = Recette(text['nom'], -1, actions)
     return recette
 
 
@@ -57,7 +57,7 @@ def version_1_1(text: List[Dict]):
     actions = []
     for action in text['actions']:
         actions.append(action_f(action))
-    recette = Recette(text['nom'], actions)
+    recette = Recette(text['nom'], text['nbr_p'], actions)
     return recette
 
 

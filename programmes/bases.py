@@ -208,7 +208,7 @@ class Recette:
         liste = []
         for action in self.actions:
             liste.append(action.write_json())
-        txt = {'nom': self.nom, 'actions': liste}
+        txt = {'nom': self.nom, 'nbr_p': self.nbr_personnes, 'actions': liste}
         return txt
 
     def arbre(self):
@@ -235,4 +235,7 @@ def tj(x):
     return th(x) * 24
 
 
-crediter = ['icons by freepik', 'Original idea by Marc Chevalier']
+crediter = ['icons by freepik',
+            'Original idea by Marc Chevalier',
+            'UI by Maxime Bezot',
+            'management by Oscar Chevalier']

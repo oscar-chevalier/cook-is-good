@@ -1,7 +1,10 @@
+from pathlib import Path
 from typing import List
 
 
 from programmes.bases import Recette, Action, Ingredient
+from programmes.recettes.recettes_opener import ouvreur_des_recettes
+from programmes.cuisines.configer import trouveur_de_config
 
 
 class ArbreProduits:
@@ -125,3 +128,28 @@ def lecteur_de_recettes(recettes: List[Recette]):
     print(ordre_actions)
     for action in ordre_actions:
         print(action)
+
+
+def conseiller_recette():
+    config = trouveur_de_config()
+    if config is None:
+        return []
+    recettes = ouvreur_des_recettes()
+    recettes_possibles = []
+    for recette in recettes:
+        for ingredient in recette.ingredients:
+            if ingredient not in config.cuisine.ingredients:
+                break
+        else:
+            recettes_possibles.append(recette)
+    return recettes_possibles
+
+
+def recettes_existantes():
+    p = Path.cwd()
+    p = p / 'recettes'
+    recettes = []
+    for f in p.iterdir():
+        if str(f.parts[-1])[-5:] == '.menu':
+            recettes.append(str(f.parts[-1])[:-5])
+    return recettes
