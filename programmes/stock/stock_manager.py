@@ -1,4 +1,6 @@
-from bases import Date
+from typing import Dict
+
+from programmes.bases import Date
 
 
 class Ingredient:
@@ -13,3 +15,7 @@ class Ingredient:
         return {'nom': self.nom, 'quantite': self.quantite, 'unite': self.unite,
                 'ddp': self.date_de_peremption.write_json(),
                 'jao': self.jours_apres_ouverture}
+
+
+def ingredient_creator(dico: Dict):
+    return Ingredient(dico['nom'], dico['quantite'], dico['unite'], dico['ddp'], dico['jao'])

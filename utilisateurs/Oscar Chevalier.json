@@ -1,1 +1,1 @@
-{"nom_utilisateur": "Oscar Chevalier", "cuisine": {"nom": "Villecresnes", "ustensiles": [{"nom": "plaque de cuisson", "nombre": 4}, {"nom": "four", "nombre": 1}], "ingredients": [{"nom": "Riz", "quantite": 1000, "unite": "g", "ddp": {"annee": 2022, "mois": 1, "jour": 1}, "jao": -1}, {"nom": "Yaourt", "quantite": 36, "unite": "u", "ddp": {"annee": 2021, "mois": 1, "jour": 5}, "jao": 3600}]}, "langues": ["fr", "en", "de"]}
+{"nom_utilisateur": "Oscar Chevalier", "cuisine": "Villecresnes", "langues": ["fr", "en", "de"]}

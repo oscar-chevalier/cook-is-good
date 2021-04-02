@@ -1,4 +1,4 @@
-from bases import RecetteEvidente, Action, Ingredient, Produit, Ustensile, tmin, tj
+from programmes.bases import RecetteEvidente, Action, Ingredient, Ustensile, tmin, tj
 
 
 RecetteEvidente('separation d\'oeuf',

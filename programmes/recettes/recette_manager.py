@@ -1,5 +1,5 @@
-from opener import ouvreur_des_recettes
-from configer import trouveur_de_config
+from programmes.recettes.recettes_opener import ouvreur_des_recettes
+from programmes.cuisines.configer import trouveur_de_config
 
 
 def conseiller_recette():

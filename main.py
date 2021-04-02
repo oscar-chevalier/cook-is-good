@@ -1,12 +1,8 @@
-from recettes import creusois, crepes
-from stock_manager import Ingredient
-from bases import Date
-from opener import decodage
-from saver import encodage
-from recipies_manager import lecteur_de_recettes
-from cuisine_manager import saver_de_cuisine, Cuisine, UstensileCuisine
-from affichage_dev import aff_main_menu
-from configer import saver_de_config, Config, opener_de_config
+from programmes.stock.stock_manager import Ingredient
+from programmes.bases import Date
+from programmes.cuisines.cuisine_manager import saver_de_cuisine, Cuisine, UstensileCuisine
+from programmes.affichage_dev import aff_main_menu
+from programmes.cuisines.configer import saver_de_config, Config, opener_de_config
 
 cuisine = Cuisine('Villecresnes',
                   [UstensileCuisine('plaque de cuisson', 4),

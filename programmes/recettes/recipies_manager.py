@@ -1,7 +1,7 @@
 from typing import List
 
 
-from bases import Recette, Action, Ingredient
+from programmes.bases import Recette, Action, Ingredient
 
 
 class ArbreProduits:

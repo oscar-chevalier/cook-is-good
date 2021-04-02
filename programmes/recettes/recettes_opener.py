@@ -1,8 +1,8 @@
 from json import loads
 from pathlib import Path
 from typing import List, Dict
-from bases import Recette, Action, Produit, Ingredient, Ustensile
-from recettes import recettes_preinstallees
+from programmes.bases import Recette, Action, Produit, Ingredient, Ustensile
+from programmes.recettes.recettes import recettes_preinstallees
 
 
 def ingredient_produit(txt: Dict):

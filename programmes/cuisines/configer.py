@@ -2,7 +2,7 @@ from json import dumps, loads
 from pathlib import Path
 from typing import List
 
-from cuisine_manager import Cuisine
+from programmes.cuisines.cuisine_manager import Cuisine, cuisine_opener
 
 
 class Config:
@@ -16,7 +16,7 @@ class Config:
         for langue in self.langues:
             liste_l.append(langue)
         texte = {'nom_utilisateur': self.nom_utilisateur,
-                 'cuisine': self.cuisine.write_json(),
+                 'cuisine': self.cuisine.nom,
                  'langues': liste_l}
         return texte
 
@@ -44,6 +44,7 @@ def opener_de_config(nom_config: str):
     liste_l = []
     for langue in dico['langues']:
         liste_l.append(langue)
+    cuisine = cuisine_opener(dico['cuisine'])
     return Config(dico['nom_utilisateur'], dico['cuisine'], liste_l)
 
 
@@ -69,3 +70,13 @@ def trouveur_de_config():
             config = opener_de_config(dico['nom_config'])
             return config
     return None
+
+
+def chercheur_de_toutes_les_configs():
+    p = Path.cwd()
+    d = p / 'utilisateurs'
+    utilisateurs = []
+    for f in d.iterdir():
+        if str(f.parts[-1])[-5:] == '.json':
+            utilisateurs.append(str(f.parts[-1])[:-5])
+    return utilisateurs

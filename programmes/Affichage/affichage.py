@@ -8,13 +8,13 @@ window.title("Cook is Good - /n")
 #Ouvrir Logo
 logo = Image.open("Logo.png")
 #Resize
-resized = logo.resize((100,100))
+resized = logo.resize((100, 100))
 new_logo = ImageTk.PhotoImage(resized)
-label = Label(window,image=new_logo)
-text = Label(window,text="Cook Is Good")
+label = Label(window, image=new_logo)
+text = Label(window, text="Cook Is Good")
 
-label.grid(row=0,column=0)
-text.grid(row=1,column=0)
+label.grid(row=0, column=0)
+text.grid(row=1, column=0)
 
 
 def donothing():
@@ -22,11 +22,14 @@ def donothing():
    button = Button(filewin, text="Do nothing button")
    button.pack()
 
+
 def black_mode():
    window["bg"]="#282828"
-   
+
+
 def white_mode():
    window["bg"]="white"
+
 
 menu = Menu(window)
 new_item = Menu(menu)

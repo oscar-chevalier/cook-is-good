@@ -1,4 +1,4 @@
-from bases import Recette, Action, Ingredient, Produit, Ustensile, tj, th, tmin
+from programmes.bases import Recette, Action, Ingredient, Produit, Ustensile, tj, th, tmin
 
 
 def lait(volume):

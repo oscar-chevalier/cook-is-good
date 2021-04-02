@@ -1,7 +1,7 @@
 from json import dumps, loads
 from pathlib import Path
-from typing import List
-from stock_manager import Ingredient
+from typing import List, Dict
+from programmes.stock.stock_manager import Ingredient, ingredient_creator
 
 
 class UstensileCuisine:
@@ -12,6 +12,10 @@ class UstensileCuisine:
     def write_json(self):
         txt = {'nom': self.nom, 'nombre': self.nombre}
         return txt
+
+
+def ustensile_creator(dico: Dict):
+    return UstensileCuisine(dico['nom'], dico['nombre'])
 
 
 class Cuisine:
@@ -32,34 +36,39 @@ class Cuisine:
 
 
 def saver_de_cuisine(cuisine: Cuisine):
+    p = Path.cwd()
+    for f in p.iterdir():
+        if str(f.parts[-1]) == 'cuisines':
+            break
+    else:
+        d = p / 'cuisines'
+        d.mkdir()
+        print(str(d))
     with open(f'cuisines/{cuisine.nom}.cuisine.json', mode='w') as file:
         texte = cuisine.write_json()
         file.write(dumps(texte))
 
 
-def cuisine_translator(dictionnaire: dict):
-    pass
-
-
-def translator(texte: List[str]):
-    cuisines = []
-    for ligne in texte:
-        dictionnaire = loads(ligne)
-        cuisines.append(cuisine_translator(dictionnaire))
-
-
-def cherche_cuisine():
+def cuisine_opener(nom_cuisine: str):
     p = Path.cwd()
+    d = p / 'cuisines'
     for f in p.iterdir():
         if str(f.parts[-1]) == 'cuisines':
-            cuisines = []
-            for c in f.iterdir():
-                with open(c) as file:
-                    cuisine = []
-                    for line in file:
-                        cuisine.append(line)
-                    cuisines.append(cuisine)
+            break
     else:
-        d = p / 'cuisines'
         d.mkdir()
         return None
+    for f in d.iterdir():
+        if str(f.parts[-1]) == f'{nom_cuisine}.json':
+            fichier = ''
+            with open(f'cuisines/{nom_cuisine}.json') as file:
+                for line in file:
+                    fichier += line
+            dico = loads(fichier)
+            liste_i = []
+            for ingredient in dico['ingredients']:
+                liste_i.append(ingredient_creator(ingredient))
+            liste_u = []
+            for ustensile in dico['ustensiles']:
+                liste_u.append(ustensile_creator(ustensile))
+            return Cuisine(dico['nom'], liste_u, liste_i)
