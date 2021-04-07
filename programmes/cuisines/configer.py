@@ -20,6 +20,12 @@ class Config:
                  'langues': liste_l}
         return texte
 
+    def __str__(self):
+        aff = self.nom_utilisateur + '\n'
+        aff += self.cuisine.__str__() + '\n'
+        aff += str(self.langues)
+        return aff
+
 
 def saver_de_config(config: Config):
     p = Path.cwd()
@@ -45,7 +51,7 @@ def opener_de_config(nom_config: str):
     for langue in dico['langues']:
         liste_l.append(langue)
     cuisine = cuisine_opener(dico['cuisine'])
-    return Config(dico['nom_utilisateur'], dico['cuisine'], liste_l)
+    return Config(dico['nom_utilisateur'], cuisine, liste_l)
 
 
 def createur_de_config(nom_config: str):
@@ -67,6 +73,8 @@ def trouveur_de_config():
             with open(f'utilisateurs/config.json') as file:
                 for ligne in file:
                     dico = loads(ligne)
+            if dico['nom_config'] == '':
+                return  None
             config = opener_de_config(dico['nom_config'])
             return config
     return None
@@ -77,7 +85,7 @@ def chercheur_de_toutes_les_configs():
     d = p / 'utilisateurs'
     utilisateurs = []
     for f in d.iterdir():
-        if str(f.parts[-1])[-5:] == '.json':
+        if str(f.parts[-1])[-5:] == '.json' and str(f.parts[-1]) != 'config.json':
             utilisateurs.append(str(f.parts[-1])[:-5])
     return utilisateurs
 

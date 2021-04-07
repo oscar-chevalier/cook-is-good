@@ -1,6 +1,6 @@
 from typing import Dict
 
-from programmes.bases import Date
+from programmes.bases import Date, date_creator
 
 
 class IngredientStock:
@@ -16,6 +16,11 @@ class IngredientStock:
                 'ddp': self.date_de_peremption.write_json(),
                 'jao': self.jours_apres_ouverture}
 
+    def __str__(self):
+        return f'{self.nom} : {self.quantite} {self.unite}, {str(self.date_de_peremption)}'
+
 
 def ingredient_creator(dico: Dict):
-    return IngredientStock(dico['nom'], dico['quantite'], dico['unite'], dico['ddp'], dico['jao'])
+    date_de_peremption = date_creator(dico['ddp']['jour'], dico['ddp']['mois'], dico['ddp']['annee'])
+    return IngredientStock(dico['nom'], dico['quantite'], dico['unite'],
+                           date_de_peremption, dico['jao'])

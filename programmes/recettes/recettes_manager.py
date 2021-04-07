@@ -130,8 +130,7 @@ def lecteur_de_recettes(recettes: List[Recette]):
         print(action)
 
 
-def conseiller_recette():
-    config = trouveur_de_config()
+def conseiller_recette(config):
     if config is None:
         return []
     recettes = ouvreur_des_recettes()

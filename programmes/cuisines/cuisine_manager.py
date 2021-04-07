@@ -13,6 +13,9 @@ class UstensileCuisine:
         txt = {'nom': self.nom, 'nombre': self.nombre}
         return txt
 
+    def __str__(self):
+        return f'{self.nom} {self.nombre}'
+
 
 def ustensile_creator(dico: Dict):
     return UstensileCuisine(dico['nom'], dico['nombre'])
@@ -33,6 +36,24 @@ class Cuisine:
             liste_i.append(ingredient.write_json())
         texte = {'nom': self.nom, 'ustensiles': liste_u, 'ingredients': liste_i}
         return texte
+
+    def add_ingredients(self, ingredients: IngredientStock):
+        self.ingredients.append(ingredients)
+
+    def liste_stock(self, debut: int, fin: int):
+        liste = []
+        for ing in self.ingredients[debut:fin]:
+            liste.append(str(ing))
+        return liste
+
+    def __str__(self):
+        aff = self.nom + '\nUstensiles :\n'
+        for ust in self.ustensiles:
+            aff += str(ust) + '\n'
+        aff += 'Ingredients :\n'
+        for ing in self.ingredients:
+            aff += str(ing) + '\n'
+        return aff
 
 
 def saver_de_cuisine(cuisine: Cuisine):
@@ -59,9 +80,9 @@ def cuisine_opener(nom_cuisine: str):
         d.mkdir()
         return None
     for f in d.iterdir():
-        if str(f.parts[-1]) == f'{nom_cuisine}.json':
+        if str(f.parts[-1]) == f'{nom_cuisine}.cuisine.json':
             fichier = ''
-            with open(f'cuisines/{nom_cuisine}.json') as file:
+            with open(f'cuisines/{nom_cuisine}.cuisine.json') as file:
                 for line in file:
                     fichier += line
             dico = loads(fichier)
@@ -74,11 +95,11 @@ def cuisine_opener(nom_cuisine: str):
             return Cuisine(dico['nom'], liste_u, liste_i)
 
 
-def chercheur_de_cuisines():
+def chercheur_de_cuisines() -> List[str]:
     p = Path.cwd()
     p = p / 'cuisines'
     cuisines = []
     for f in p.iterdir():
         if str(f.parts[-1])[-5:] == '.json':
-            cuisines.append(str(f.parts[-1][:-5]))
+            cuisines.append(str(f.parts[-1][:-13]))
     return cuisines

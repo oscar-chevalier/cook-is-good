@@ -23,13 +23,20 @@ class Ustensile:
 
 
 class Date:
-    def __init__(self, annee: int, mois: int, jour: int):
+    def __init__(self, jour: int, mois: int, annee: int):
         self.annee = annee
         self.mois = mois
         self.jour = jour
 
     def write_json(self):
-        return {'annee': self.annee, 'mois': self.mois, 'jour': self.jour}
+        return {'jour': self.jour, 'mois': self.mois, 'annee': self.annee}
+
+    def __str__(self):
+        return f'{self.jour}/{self.mois}/{self.annee}'
+
+
+def date_creator(jour, mois, annee):
+    return Date(jour, mois, annee)
 
 
 class Produit:
