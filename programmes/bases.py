@@ -39,6 +39,16 @@ def date_creator(jour, mois, annee):
     return Date(jour, mois, annee)
 
 
+def est_plus_proche_que(date1: Date, date2: Date):
+    if date1.annee < date2.annee:
+        return True
+    if date1.mois < date2.mois and date1.annee == date2.annee:
+        return True
+    if date1.jour < date2.jour and date1.mois == date2.mois and date1.annee == date2.annee:
+        return True
+    return False
+
+
 class Produit:
     def __init__(self, nom: str, quantite: int = 0, unite: str = '', temps_min: int = 0, temps_max: int = 0):
         if quantite >= 2 and unite == '@U':

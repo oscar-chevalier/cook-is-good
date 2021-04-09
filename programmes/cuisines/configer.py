@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List
 
 from programmes.cuisines.cuisine_manager import Cuisine, cuisine_opener
+from programmes.langue.langue import langue_opener
 
 
 class Config:
@@ -10,6 +11,7 @@ class Config:
         self.nom_utilisateur = nom_utilisateur  # Unique
         self.cuisine = cuisine
         self.langues = langues  # Dans l'ordre de preference
+        self.langue = langue_opener(langues)
 
     def write_json(self):
         liste_l = []

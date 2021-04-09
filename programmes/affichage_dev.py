@@ -63,30 +63,32 @@ def reponses(texte: str, rep_poss: Tuple, boucle: bool):
 
 def aff_main_menu():
     config = trouveur_de_config()
-    aff = 'Fichier | a Propos | Configuration | Stock\n'
-    r1 = Rectangle(50, 10, 'Recettes conseillees', conseiller_recette(config))
-    r2 = Rectangle(50, 10, 'Produits bientot perimes', [])
+    langue = config.langue.dictionnaire['affichage_dev']
+    aff = langue[0]
+    r1 = Rectangle(50, 10, langue[1], conseiller_recette(config))
+    r2 = Rectangle(50, 10, langue[2], config.cuisine.ingredients_bientot_perimes(0, 8))
     aff += merge_rectangle([r1, r2])
     rep = ''
     while rep != 'Q':
         rep = reponses(aff, ('F', 'P', 'C', 'Q', 'S'), True)
         if rep == 'C':
-            config = aff_configuration()
+            config = aff_configuration(config)
         if rep == 'P':
-            reponses(Rectangle(50, 10, 'A propos', crediter).aff(True), (), False)
+            reponses(Rectangle(50, 10, langue[3], crediter).aff(True), (), False)
         if rep == 'S':
             print('S')
             if config is not None:
                 print('C')
                 aff_gestion_stock(config)
             else:
-                reponses(Rectangle(50, 10, 'Erreur Config', ['Config inexistante']).aff(True), (), False)
+                reponses(Rectangle(50, 10, langue[4], [langue[5]]).aff(True), (), False)
 
 
 def aff_gestion_stock(config: Config):
     rep = ''
+    langue = config.langue.dictionnaire['affichage_dev']
     while rep != 'Q':
-        rec = Rectangle(50, 12, 'Produits', config.cuisine.liste_stock(0, 8))
+        rec = Rectangle(50, 12, langue[6], config.cuisine.liste_stock(0, 8))
         rep = reponses(rec.aff(True), (), True)
         reg = match(r'(?P<nom>.+) (?P<nombre>.+) (?P<unite>.+) (?P<jour>\d+)/(?P<mois>\d+)/(?P<annee>\d+)$', rep)
         if reg is not None:
@@ -95,10 +97,11 @@ def aff_gestion_stock(config: Config):
             print('ok')
 
 
-def aff_utilisateur():
+def aff_utilisateur(config: Config):
     rep = ''
+    langue = config.langue.dictionnaire['affichage_dev']
     while rep != 'Q':
-        liste = ['Utilisateurs (supRimer, oUvrir config)']
+        liste = [langue[7]]
         utilisateur_actuel = trouveur_de_config()
         liste_utilisateurs = chercheur_de_toutes_les_configs()
         liste.extend(liste_utilisateurs)
@@ -107,43 +110,44 @@ def aff_utilisateur():
                 liste[i] = '-' + str(i - 1) + ' ' + liste[i]
             else:
                 liste[i] = ' ' + str(i - 1) + ' ' + liste[i]
-        liste.extend(['commandes ([nombre][lettre]):', 'Creer utilisateur'])
-        aff = Rectangle(50, 10, 'Utilisateur', liste).aff(True)
+        liste.extend([langue[8], langue[9]])
+        aff = Rectangle(50, 10, langue[10], liste).aff(True)
         rep = reponses(aff, ('R', 'C', 'U'), False)
         if len(rep) == 2 and int(rep[0]) < len(liste_utilisateurs):
             if rep[1] == 'R':
-                aff = Rectangle(100, 2, 'Sur', ['Etes-vous sur de vouloir supprimer ce compte ? Oui']).aff(True)
+                aff = Rectangle(100, 2, langue[11], [langue[12]]).aff(True)
                 rep2 = reponses(aff, (), False)
                 if rep2 == 'O':
                     supprimer_config(liste_utilisateurs[int(rep[0])])
             elif rep[1] == 'U':
                 createur_de_config(liste_utilisateurs[int(rep[0])])
         elif rep == 'C':
-            nom = input('nom_utilisateur : ')
-            aff = ['nom_cuisines :']
+            nom = input(langue[13])
+            aff = [langue[14]]
             liste_cuisines = chercheur_de_cuisines()
             for i, cuis in enumerate(liste_cuisines):
                 aff.append(f'{i} {cuis}')
-            aff.append('Nouvelle cuisine')
+            aff.append(langue[15])
             cuisine = None
             while cuisine is None:
-                rec = Rectangle(100, 10, 'Cuisine', aff)
+                rec = Rectangle(100, 10, langue[16], aff)
                 rep = reponses(rec.aff(True), (), False)
                 if rep == 'N':
-                    nom_cuisine = input('nom : ')
+                    nom_cuisine = input(langue[17])
                     cuisine = Cuisine(nom_cuisine, [], [])
                 else:
                     cuisine = cuisine_opener(liste_cuisines[int(rep)])
-            config = Config(nom, cuisine, ['fr'])
+            config = Config(nom, cuisine, config.langues)
             createur_de_config(config.nom_utilisateur)
             saver_de_config(config)
     config = trouveur_de_config()
     return config
 
 
-def aff_configuration():
-    aff = Rectangle(50, 10, 'Configuration', ['[U] : modifier profil Utilisateur']).aff(True)
+def aff_configuration(config: Config):
+    langue = config.langue.dictionnaire['affichage_dev']
+    aff = Rectangle(50, 10, langue[18], [langue[19]]).aff(True)
     rep = reponses(aff, ('U', 'M'), True)
     if rep == 'U':
-        config = aff_utilisateur()
+        config = aff_utilisateur(config)
         return config

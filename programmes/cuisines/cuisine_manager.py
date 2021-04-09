@@ -1,7 +1,10 @@
 from json import dumps, loads
 from pathlib import Path
 from typing import List, Dict
+
+
 from programmes.stock.stock_manager import IngredientStock, ingredient_creator
+from programmes.bases import est_plus_proche_que
 
 
 class UstensileCuisine:
@@ -55,8 +58,46 @@ class Cuisine:
             aff += str(ing) + '\n'
         return aff
 
+    def ingredients_bientot_perimes(self, d, f):
+        self.ingredients = sort_ingredients(self.ingredients)
+        liste = []
+        for ingredient in self.ingredients[d:f]:
+            liste.append(str(ingredient))
+        return liste
 
-def saver_de_cuisine(cuisine: Cuisine):
+
+def sort_ingredients(liste_ingredient: List[IngredientStock]):
+    def fusion(tab1, tab2):
+        tabf = []
+        l1 = len(tab1)
+        l2 = len(tab2)
+        n1 = 0
+        n2 = 0
+        while True:
+            if n1 < l1 and n2 < l2:
+                if est_plus_proche_que(tab1[n1].date_de_peremption, tab2[n2].date_de_peremption):
+                    tabf.append(tab1[n1])
+                    n1 += 1
+                else:
+                    tabf.append(tab2[n2])
+                    n2 += 1
+            elif n1 >= l1:
+                tabf.extend(tab2[n2:])
+                return tabf
+            else:
+                tabf.extend(tab1[n1:])
+                return tabf
+
+    def tri_fusion(tableau):
+        le = len(tableau)
+        if le <= 1:
+            return tableau
+        return fusion(tri_fusion(tableau[:le // 2]), tri_fusion(tableau[le // 2:]))
+
+    return tri_fusion(liste_ingredient)
+
+
+def cuisine_saver(cuisine: Cuisine):
     p = Path.cwd()
     for f in p.iterdir():
         if str(f.parts[-1]) == 'cuisines':
