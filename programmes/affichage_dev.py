@@ -1,12 +1,13 @@
 from re import match
 from typing import List, Tuple
 
-from programmes.recettes.recettes_manager import conseiller_recette
+from programmes.recettes.recettes_manager import conseiller_recette, recettes_existantes, gestionnaire_des_recettes
 from programmes.cuisines.configer import chercheur_de_toutes_les_configs, supprimer_config, Config, trouveur_de_config, \
     createur_de_config, saver_de_config
-from programmes.cuisines.cuisine_manager import cuisine_opener, chercheur_de_cuisines, Cuisine
+from programmes.cuisines.cuisine_manager import cuisine_opener, chercheur_de_cuisines, Cuisine, cuisine_saver
 from programmes.bases import crediter, Date
 from programmes.stock.stock_manager import IngredientStock
+from programmes.recettes.recettes_opener import decodage
 
 
 class Rectangle:
@@ -82,6 +83,33 @@ def aff_main_menu():
                 aff_gestion_stock(config)
             else:
                 reponses(Rectangle(50, 10, langue[4], [langue[5]]).aff(True), (), False)
+        if rep == 'F':
+            aff_file(config)
+
+
+def aff_file(config: Config):
+    langue = config.langue.dictionnaire['affichage_dev']
+    liste1 = recettes_existantes()
+    liste2 = []
+    for i, ele in enumerate(liste1):
+        liste2.append(str(i) + ' ' + ele)
+    aff = Rectangle(50, 10, langue[20], liste2).aff(True)
+    rep = reponses(aff, (), True)
+    lecteur_de_recettes([liste1[int(rep)]], config)
+
+
+def lecteur_de_recettes(str_recettes: List[str], config: Config):
+    langue = config.langue.dictionnaire['affichage_dev']
+    recettes = []
+    for str_rec in str_recettes:
+        recettes.append(decodage(str_rec))
+    ordre_actions = gestionnaire_des_recettes(recettes)
+    for i in range(len(ordre_actions)):
+        suiv = ''
+        if i + 1 < len(ordre_actions):
+            suiv = ' ' + ordre_actions[i+1].aff_str()
+        aff = Rectangle(100, 10, langue[21], [ordre_actions[i].aff_str(), suiv]).aff(True)
+        reponses(aff, (), False)
 
 
 def aff_gestion_stock(config: Config):
@@ -135,6 +163,8 @@ def aff_utilisateur(config: Config):
                 if rep == 'N':
                     nom_cuisine = input(langue[17])
                     cuisine = Cuisine(nom_cuisine, [], [])
+                    cuisine_saver(cuisine)
+
                 else:
                     cuisine = cuisine_opener(liste_cuisines[int(rep)])
             config = Config(nom, cuisine, config.langues)

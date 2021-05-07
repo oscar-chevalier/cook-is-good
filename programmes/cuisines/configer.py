@@ -76,7 +76,7 @@ def trouveur_de_config():
                 for ligne in file:
                     dico = loads(ligne)
             if dico['nom_config'] == '':
-                return  None
+                return None
             config = opener_de_config(dico['nom_config'])
             return config
     return None

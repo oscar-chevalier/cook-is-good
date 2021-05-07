@@ -62,6 +62,9 @@ def version_1_1(text: List[Dict]):
 
 
 def decodage(recette):
+    for recet in recettes_preinstallees:
+        if recet.nom == recette:
+            return recet
     with open('recettes/' + recette + '.menu') as file:
         text = []
         version = 0

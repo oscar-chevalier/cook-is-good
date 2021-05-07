@@ -160,6 +160,20 @@ class Action:
                 aff += f'{ingredient.__str__()}, '
         return aff + '\n'
 
+    def aff_str(self):
+        if self.commentaires != '':
+            return self.commentaires
+        aff = self.action_effectue + ' '
+        nbr_ingredients = len(self.ingredients)
+        for i, ingredient in enumerate(self.ingredients):
+            if i == nbr_ingredients - 2 and nbr_ingredients > 1:
+                aff += f'{ingredient.__str__()} et '
+            elif i == nbr_ingredients - 1:
+                aff += f'{ingredient.__str__()}'
+            else:
+                aff += f'{ingredient.__str__()}, '
+        return aff
+
     def aff(self):
         txt = {'action': self.action_effectue, 'ingredients': []}
         for ingredient in self.ingredients:

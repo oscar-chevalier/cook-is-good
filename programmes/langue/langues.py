@@ -17,6 +17,10 @@ fr = {'affichage_dev': {0: 'Fichier | a Propos | Configuration | Stock\n',
                         16: 'Cuisine',
                         17: 'nom : ',
                         18: 'Configuration',
-                        19: '[U] : modifier profil Utilisateur'}}
+                        19: '[U] : modifier profil Utilisateur',
+                        20: 'Recettes',
+                        21: 'Actions'}}
+
+en = {'affichage_dev': {0: 'File | About | Configuration | Stock'}}
 
 liste_langues = {'fr': fr}

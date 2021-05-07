@@ -2,9 +2,9 @@ from pathlib import Path
 from typing import List
 
 
-from programmes.bases import Recette, Action, Ingredient
+from programmes.bases import Recette, Action
 from programmes.recettes.recettes_opener import ouvreur_des_recettes
-from programmes.cuisines.configer import trouveur_de_config
+from programmes.recettes.recettes import recettes_preinstallees
 
 
 class ArbreProduits:
@@ -80,7 +80,7 @@ def converter(roots: List[List[List[ArbreProduits]]]) -> List[List[List[Action]]
     return actions_possibles
 
 
-def ordonnanceur(actions_possibles: List[List[List[Action]]]):
+"""def ordonnanceur(actions_possibles: List[List[List[Action]]]):
     print(actions_possibles)
     ingredients = []
     for _ in range(len(actions_possibles)):
@@ -104,10 +104,15 @@ def ordonnanceur(actions_possibles: List[List[List[Action]]]):
             if ingredient not in ingredients_deja_vu:
                 ingredients_deja_vu[ingredient] = [i]
             else:
-                ingredients_deja_vu[ingredient].append(i)
+                ingredients_deja_vu[ingredient].append(i)"""
 
 
-def optimisateur(recettes: List[Recette]):
+def ordonnanceur(actions_possibles: List[List[List[Action]]]):
+    ordre_actions = []
+    return actions_possibles[0][0]
+
+
+def optimisateur(recettes: List[Recette]) -> List[Action]:
     roots = []
     for recette in recettes:
         root = optimisateur_recursif(ArbreProduits(recette.actions[-1], []))
@@ -122,12 +127,9 @@ def optimisateur(recettes: List[Recette]):
     return ordre_actions
 
 
-def lecteur_de_recettes(recettes: List[Recette]):
+def gestionnaire_des_recettes(recettes: List[Recette]):
     ordre_actions = optimisateur(recettes)
-    stade = 0
-    print(ordre_actions)
-    for action in ordre_actions:
-        print(action)
+    return ordre_actions
 
 
 def conseiller_recette(config):
@@ -144,11 +146,13 @@ def conseiller_recette(config):
     return recettes_possibles
 
 
-def recettes_existantes():
+def recettes_existantes() -> List[str]:
     p = Path.cwd()
     p = p / 'recettes'
     recettes = []
+    for recette in recettes_preinstallees:
+        recettes.append(recette.nom)
     for f in p.iterdir():
-        if str(f.parts[-1])[-5:] == '.menu':
+        if str(f.parts[-1])[-5:] == '.menu' and str(f.parts[-1])[:-5] not in recettes:
             recettes.append(str(f.parts[-1])[:-5])
     return recettes
