@@ -209,7 +209,7 @@ class Action:
     def temps(self, multi: float):
         return self.temps_estime + self.temps_estime*(1-multi)*self.proportionnel
 
-
+x²
 class Recette:
     def __init__(self, nom, nbr_personnes: int, actions: List[Action]):
         self.nom = nom
@@ -250,8 +250,8 @@ class Recette:
 
 
 class RecetteEvidente(Recette):
-    def __init__(self, nom: str, actions: List[Action]):
-        super().__init__(nom, actions)
+    def __init__(self, nom: str, nbr_personnes: int, actions: List[Action]):
+        super().__init__(nom, nbr_personnes, actions)
 
 
 def th(x):

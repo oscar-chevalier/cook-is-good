@@ -61,7 +61,7 @@ def version_1_1(text: List[Dict]):
     return recette
 
 
-def decodage(recette):
+def decodage(recette: str):
     for recet in recettes_preinstallees:
         if recet.nom == recette:
             return recet
