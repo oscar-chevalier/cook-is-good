@@ -56,7 +56,7 @@ def ouvrir_fichier():
     window.filename = filedialog.askopenfilename(initialdir="/", title="Selectionner une recette",
                                                  filetypes=(("menu files", "*.menu"), ("all files", "*.*")))
     recette = decodage(window.filename.split('/')[-1].split('.')[0])
-    affichage_recette = Label(window, text=str(recette), borderwidth=2, relief="solid")
+    affichage_recette = Label(window, text=str(recette), borderwidth=2, relief="solid", font=('Helvatical bold', 15))
     affichage_recette.grid(row=2, column=2)
 
 
