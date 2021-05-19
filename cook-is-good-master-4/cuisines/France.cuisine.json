@@ -1,0 +1,1 @@
+{"nom": "France", "ustensiles": [{"nom": "plaque de cuisson", "nombre": 4}, {"nom": "four", "nombre": 1}], "ingredients": [{"nom": "Riz", "quantite": 1000, "unite": "g", "ddp": {"jour": 1, "mois": 1, "annee": 2022}, "jao": -1}, {"nom": "Yaourt", "quantite": 36, "unite": "u", "ddp": {"jour": 1, "mois": 5, "annee": 2021}, "jao": 3600}]}
